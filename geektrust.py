@@ -1,17 +1,12 @@
-from sys import argv
-
+from src.subscriptions.subscription_factory import subscription_factory
+from src.config.config import Category, Plan
+from datetime import  datetime
 def main():
-    
-    """
-    Sample code to read inputs from the file
+    datex = datetime.strptime("20-02-2022","%d-%m-%Y")
+    x = subscription_factory(category=Category.MUSIC,plan=Plan.PERSONAL,start_date=datex)
+    print(x.end_date)
 
-    if len(argv) != 2:
-        raise Exception("File path not entered")
-    file_path = argv[1]
-    f = open(file_path, 'r')
-    Lines = f.readlines()
-    //Add your code here to process the input commands
-    """
-    
+
+
 if __name__ == "__main__":
     main()

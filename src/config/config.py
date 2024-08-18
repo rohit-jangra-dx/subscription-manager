@@ -1,38 +1,50 @@
 from enum import Enum, auto
 
+
 # Enums
 class Category(Enum):
     MUSIC = auto()
     VIDEO = auto()
     PODCAST = auto()
 
+
 class Plan(Enum):
     FREE = auto()
     PERSONAL = auto()
     PREMIUM = auto()
 
+
 class TopUpType(Enum):
     FOUR_DEVICE = auto()
     TEN_DEVICE = auto()
 
-class Duration(Enum):
-    TRIAL = 1   # 1 month
-    MONTHLY = 1
-    QUARTERLY = 3
+
+# plan to duration mapping
+PLAN_DURATION = {
+    Plan.FREE: 1,
+    Plan.PERSONAL: 1,
+    Plan.PREMIUM: 3
+}
+
+PLAN_FROM_STRING = {
+    "FREE": Plan.FREE,
+    "PERSONAL": Plan.PERSONAL,
+    "PREMIUM": Plan.PREMIUM
+}
 
 #pricing
 SUBSCRIPTION_PRICES = {
-    Category.MUSIC:{
+    Category.MUSIC: {
         Plan.FREE: 0,
         Plan.PERSONAL: 100,
         Plan.PREMIUM: 250
     },
-    Category.VIDEO:{
+    Category.VIDEO: {
         Plan.FREE: 0,
         Plan.PERSONAL: 200,
         Plan.PREMIUM: 500
     },
-    Category.PODCAST:{
+    Category.PODCAST: {
         Plan.FREE: 0,
         Plan.PERSONAL: 100,
         Plan.PREMIUM: 300
@@ -44,12 +56,5 @@ TOPUP_PRICES = {
     TopUpType.TEN_DEVICE: 100
 }
 
-PLAN_DURATIONS = {
-    Plan.FREE: Duration.TRIAL,
-    Plan.PERSONAL: Duration.MONTHLY,
-    Plan.PREMIUM: Duration.QUARTERLY
-}
-
 RENEWAL_REMINDER_DAYS = 10
 MAX_SUBSCRIPTIONS_PER_CATEGORY = 1
-

@@ -24,6 +24,15 @@ class Subscription:
 
         self.subscription_price = SUBSCRIPTION_PRICES[subscription_type][plan] * months
 
+    def __eq__(self, other):
+        if not isinstance(other,Subscription):
+            return False
+        return (
+            self.type_of_subscription == other.type_of_subscription and
+            self.start_date == other.start_date and
+            self.end_date == other.end_date and
+            self.subscription_price == other.subscription_price
+        )
 
 #child Classes
 class Music(Subscription):

@@ -9,7 +9,7 @@ class Topup:
     end_date: datetime
     time_remaining: timedelta
 
-    def __init__(self,*,top_up_type: TopUpType,duration: int, start_date:datetime,):
+    def __init__(self,*,top_up_type: TopUpType,duration: int, start_date:datetime):
 
         self.type_of_top_up = top_up_type
 
@@ -23,3 +23,13 @@ class Topup:
         #duration is in months
         self.top_up_price = TOPUP_PRICES[top_up_type] * duration
 
+    def __eq__(self, other):
+        if not isinstance(other, Topup):
+            return False
+        
+        return (
+            self.start_date == other.start_date and
+            self.type_of_top_up == other.type_of_top_up and
+            self.top_up_price == other.top_up_price and
+            self.end_date == other.end_date
+        )

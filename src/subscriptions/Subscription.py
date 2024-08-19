@@ -21,8 +21,9 @@ class Subscription:
         months = PLAN_DURATION[plan]
         self.end_date = self.start_date + relativedelta(months=months)
         self.time_remaining = self.end_date - self.start_date
-
-        self.subscription_price = SUBSCRIPTION_PRICES[subscription_type][plan] * months
+        
+        #plan have calculated amount already!
+        self.subscription_price = SUBSCRIPTION_PRICES[subscription_type][plan]
 
     def __eq__(self, other):
         if not isinstance(other,Subscription):

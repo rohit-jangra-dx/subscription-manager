@@ -7,16 +7,33 @@ class Category(Enum):
     VIDEO = auto()
     PODCAST = auto()
 
+CATEGORY_FROM_STRING = {
+    'MUSIC': Category.MUSIC,
+    'VIDEO': Category.VIDEO,
+    'PODCAST': Category.PODCAST
+}
+
 
 class Plan(Enum):
     FREE = auto()
     PERSONAL = auto()
     PREMIUM = auto()
 
+PLAN_FROM_STRING = {
+    "FREE": Plan.FREE,
+    "PERSONAL": Plan.PERSONAL,
+    "PREMIUM": Plan.PREMIUM
+}
+
 
 class TopUpType(Enum):
     FOUR_DEVICE = auto()
     TEN_DEVICE = auto()
+
+TOPUP_TYPE_FROM_STRING = {
+    "FOUR_DEVICE": TopUpType.FOUR_DEVICE,
+    "TEN_DEVICE": TopUpType.TEN_DEVICE
+}
 
 
 # plan to duration mapping
@@ -24,12 +41,6 @@ PLAN_DURATION = {
     Plan.FREE: 1,
     Plan.PERSONAL: 1,
     Plan.PREMIUM: 3
-}
-
-PLAN_FROM_STRING = {
-    "FREE": Plan.FREE,
-    "PERSONAL": Plan.PERSONAL,
-    "PREMIUM": Plan.PREMIUM
 }
 
 #pricing

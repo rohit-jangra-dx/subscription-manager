@@ -1,12 +1,15 @@
-from src.subscriptions.subscription_factory import subscription_factory
-from src.config.config import Category, Plan
-from datetime import  datetime
+import sys
+from src.inputoutput.inputparser import InputParser
+
 def main():
-    datex = datetime.strptime("20-02-2022","%d-%m-%Y")
-    x = subscription_factory(category=Category.MUSIC,plan=Plan.PERSONAL,start_date=datex)
-    print(x.end_date)
-
-
+    if(len(sys.argv) < 1):
+        raise ValueError("No input file path given!")
+    
+    file_path = sys.argv[1]
+    
+    obj = InputParser(file_path)
+    user = obj.parse()    
+    
 
 if __name__ == "__main__":
     main()

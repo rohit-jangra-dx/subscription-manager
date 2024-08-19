@@ -1,7 +1,7 @@
 from datetime import datetime, timedelta
 from dateutil.relativedelta import relativedelta
 
-from src.config.config import Category, Plan, PLAN_DURATION, SUBSCRIPTION_PRICES
+from src.config.config import Category, Plan, PLAN_DURATION, SUBSCRIPTION_PRICES, RENEWAL_REMINDER_DAYS
 
 
 class Subscription:
@@ -11,19 +11,27 @@ class Subscription:
     time_remaining: timedelta
     subscription_price: int
 
+
     def __init__(self, *, subscription_type: Category, plan: Plan, start_date: datetime):
         self.type_of_subscription = subscription_type
         self.start_date = start_date
+        self.end_date = self._calculate_end_date(plan)
+        self.subscription_price = self._get_subscription_price(subscription_type,plan)
 
-        #adding the duration to the start date
-        if not isinstance(plan, Plan):
-            raise TypeError("plan must be a Plan enum number!")
+    def __calculate_end_date(self,plan:Plan) -> datetime:
         months = PLAN_DURATION[plan]
-        self.end_date = self.start_date + relativedelta(months=months)
-        self.time_remaining = self.end_date - self.start_date
-        
-        #plan have calculated amount already!
-        self.subscription_price = SUBSCRIPTION_PRICES[subscription_type][plan]
+        return self.start_date + relativedelta(months=months)
+    
+    def __get_subscription_price(self, subscription_type: Category, plan: Plan) -> int:
+        return SUBSCRIPTION_PRICES.get(subscription_type, {}).get(plan, 0)
+   
+    @property
+    def time_remaining(self) -> timedelta:
+        return self.end_date - datetime.now()
+    
+    @property
+    def notification_date(self) ->timedelta:
+        return self.end_date - relativedelta(days=RENEWAL_REMINDER_DAYS)
 
     def __eq__(self, other):
         if not isinstance(other,Subscription):

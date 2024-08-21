@@ -1,4 +1,4 @@
-from typing import List,TypeVar, Union
+from typing import List,TypeVar, Union, Type
 from datetime import datetime
 from src.config.config import DATE_FORMAT
 from src.exceptions.subscriptionerr import InvalidDateError
@@ -32,3 +32,6 @@ def remove_item_in_list(item:T,list: List[T])-> Union[T,None]:
         return item
     else:
         return None     
+    
+def has_instance(cls: Type ,list:List[any]) -> bool:
+     return any(isinstance(item,cls) for item in list)

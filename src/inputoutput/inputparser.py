@@ -1,12 +1,9 @@
-from typing import List, Union
 from src.user.user import User
-from src.config.config import CATEGORY_FROM_STRING, PLAN_FROM_STRING, TOPUP_TYPE_FROM_STRING
-from datetime import datetime
-from src.util import validate_date, find_duplicates_in_list
-
+from src.inputoutput.outputwriter import OutputWriter
+from src.subscriptions.subscriptionmanager import SubscriptionManager
 #exceptions
-from src.exceptions.subscriptionerr import SubscriptionError, SubscriptionsNotFoundError, DuplicateCategoryError
-from src.exceptions.topuperr import TopUpError, DupilicateTopUpError, SubscriptionNotFoundDuringTopUp
+from src.exceptions.subscriptionerr import SubscriptionError
+
 
 #INPUT_COMMANDS 
 INPUT_COMMANDS = {
@@ -22,83 +19,38 @@ To_Print = {
 }
 
 class InputParser:
-    filename: str
-    user: User
-    logs: List[str]
-
+    '''
+    it initializes user and output writer needed for subscription manager
+    it parses over each line and according to command found, subscription manager 
+    handles the task
+    '''
     def __init__(self,filename: str):
         self.filename = filename
-        self.user = User()
-        self.subscription_start_date = None
-        self.logs = []
+        self.__user = User()
+        self.__output_writer = OutputWriter()
+        self.__subscription_manager = SubscriptionManager(self.__user,self.__output_writer)
 
-    def parse(self) -> Union[User,None]:
+    def parse(self):
             try:
                 with open(self.filename, 'r') as file:
                     for line in file:
                         line = line.strip()  # Remove any extraneous whitespace
+                        
                         if line.startswith(INPUT_COMMANDS['start_date']):
-                            self._handle_start_date(line)
+                            _, startdate = line.split()
+                            self.__subscription_manager.handle_set_date(startdate)
+                        
                         elif line.startswith(INPUT_COMMANDS['add_subscription']):
-                            self._handle_add_subscription(line)
+                            _, category, plan = line.split()
+                            self.__subscription_manager.handle_add_subscription(category,plan)
+                        
                         elif line.startswith(INPUT_COMMANDS['add_topup']):
-                            self._handle_add_topup(line)
+                            _, topup, duration = line.split()
+                            self.__subscription_manager.handle_add_top_up(topup,duration)
+                        
                         elif line.startswith(INPUT_COMMANDS['print_details']):
-                            self._handle_print_details()
+                            self.__subscription_manager.handle_print_details()
                         else:
                             raise ValueError(f"Unknown command found during parsing: {line}")
-
-                return self.user
             except SubscriptionError as e:
                 print(e)
-                return None
-
-    def _handle_start_date(self, line: str):
-        _, startdate = line.split()
-        try:
-            self.subscription_start_date = validate_date(startdate)
-        except SubscriptionError as e:
-            self.logs.append(e)
-
-    def _handle_add_subscription(self, line: str):
-        _, category, plan = line.split()
-        try:
-            if find_duplicates_in_list("type_of_subscription",CATEGORY_FROM_STRING[category],self.user.subscriptions):
-                raise DuplicateCategoryError()
-
-            subscription = self.user.add_subscription(
-                category=CATEGORY_FROM_STRING[category],
-                plan=PLAN_FROM_STRING[plan],
-                start_date=self.subscription_start_date
-            )
-            self.logs.append(f"{To_Print['renewal_reminder']} {subscription.notification_date}")
-        except SubscriptionError as e:
-            self.logs.append(e)
-
-    def _handle_add_topup(self, line: str):
-        _, topup, duration = line.split()
-        try:
-            if len(self.user.top_ups) == 1:
-                raise DupilicateTopUpError()
-            elif len(self.user.subscriptions) == 0:
-                raise SubscriptionNotFoundDuringTopUp()
-                
-            self.user.add_top_up(
-                top_up_type=TOPUP_TYPE_FROM_STRING[topup],
-                duration=int(duration),
-                start_date=self.subscription_start_date
-            )
-        except TopUpError as e:
-            self.logs.append(e)
-
-    def _handle_print_details(self):
-        try:
-            if len(self.user.subscriptions) == 0:
-                raise SubscriptionsNotFoundError()
-            else:
-                self.logs.append(f"{To_Print['renewal_amount']} {self.user.total_price}")
-                for log in self.logs:
-                    print(log)
-        except SubscriptionError as e:
-            self.logs.append(e)
-            

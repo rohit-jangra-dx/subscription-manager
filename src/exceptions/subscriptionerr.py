@@ -22,11 +22,15 @@ class AddSubscriptionFailedError(SubscriptionError):
 
 
 #when wrong date i.e 07-19-2022 is given
-class InvalidDateError(AddSubscriptionFailedError):
+class InvalidDateError(SubscriptionError):
     
     def __init__(self, message="INVALID_DATE") -> None:
         super().__init__(message)
     
+#invalidDateError specifically for subscriptions
+class InvalidDateErrorDuringSubscription(AddSubscriptionFailedError):
+    def __init__(self, message="INVALID_DATE") -> None:
+        super().__init__(message)
 
 #when for the same user we have duplicate subscriptions of same category 
 class DuplicateCategoryError(AddSubscriptionFailedError):

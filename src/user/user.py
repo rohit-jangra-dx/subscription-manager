@@ -1,7 +1,6 @@
 from src.config.config import Category, Plan, TopUpType
 from src.subscriptions.Subscription import Subscription
 from src.subscriptions.topup import  Topup
-from src.subscriptions.subscription_factory import subscription_factory
 from src.subscriptions.topup import Topup
 from datetime import datetime
 from typing import List, Union
@@ -18,7 +17,7 @@ class User:
 
     def add_subscription(self, *,category: Category,plan: Plan, start_date:datetime)-> Union[Subscription,None]:
         try:
-            subscription = subscription_factory(category,plan,start_date)
+            subscription = Subscription(subscription_type=category,plan=plan,start_date=start_date)
             self.subscriptions.append(subscription)
             
             #adding up to the total_price

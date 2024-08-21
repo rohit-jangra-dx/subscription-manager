@@ -1,7 +1,7 @@
 from datetime import datetime, timedelta
 from dateutil.relativedelta import relativedelta
 
-from src.config.config import Category, Plan, PLAN_DURATION, SUBSCRIPTION_PRICES, RENEWAL_REMINDER_DAYS
+from src.config.config import Category, Plan, PLAN_DURATION, SUBSCRIPTION_PRICES, RENEWAL_REMINDER_DAYS,DATE_FORMAT
 
 #custom exceptions
 from src.exceptions.subscriptionerr import *
@@ -26,15 +26,11 @@ class Subscription:
     
     def _get_subscription_price(self, subscription_type: Category, plan: Plan) -> int:
         return SUBSCRIPTION_PRICES.get(subscription_type, {}).get(plan, 0)
-   
-    @property
-    def time_remaining(self) -> timedelta:
-        return self.end_date - datetime.now()
     
     @property
     def notification_date(self) -> str:
         date =  self.end_date - relativedelta(days=RENEWAL_REMINDER_DAYS)
-        return date.strftime("%d-%m-%Y")
+        return date.strftime(DATE_FORMAT)
 
     def __eq__(self, other):
         if not isinstance(other,Subscription):
@@ -45,20 +41,4 @@ class Subscription:
             self.end_date == other.end_date and
             self.subscription_price == other.subscription_price
         )
-
-#child Classes
-class Music(Subscription):
-    def __init__(self, *, plan: Plan, start_date: datetime):
-        super().__init__(subscription_type=Category.MUSIC, plan=plan, start_date=start_date)
-
-
-class Video(Subscription):
-    def __init__(self, *, plan: Plan, start_date: datetime):
-        super().__init__(subscription_type=Category.VIDEO, plan=plan, start_date=start_date)
-
-
-class Podcast(Subscription):
-    def __init__(self, *, plan: Plan, start_date: datetime):
-        super().__init__(subscription_type=Category.PODCAST, plan=plan, start_date=start_date)
-
 

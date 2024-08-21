@@ -1,11 +1,12 @@
 from typing import List, Dict
 from datetime import datetime
+from src.config.config import DATE_FORMAT
 from src.exceptions.subscriptionerr import InvalidDateError
 
 def validate_date(date_string):
         try:
-            date_object = datetime.strptime(date_string, "%d-%m-%Y")
-            if date_object.strftime("%d-%m-%Y") != date_string:
+            date_object = datetime.strptime(date_string, DATE_FORMAT)
+            if date_object.strftime(DATE_FORMAT) != date_string:
                 raise InvalidDateError()
             return date_object
         except ValueError as e:

@@ -10,6 +10,12 @@ class AddTopUpFailedError(TopUpError):
         full_msg = base_msg + " " + message
         super().__init__(full_msg)
 
+#invalid date error used for topup
+class InvalidDateErrorDuringTopUp(AddTopUpFailedError):
+    
+    def __init__(self, message="INVALID_DATE") -> None:
+        super().__init__(message)
+    
 #when another topup is recharged during the active topup
 class DupilicateTopUpError(AddTopUpFailedError):
 

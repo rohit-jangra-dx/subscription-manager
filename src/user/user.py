@@ -4,7 +4,7 @@ from src.subscriptions.topup import  Topup
 from src.subscriptions.subscription_factory import subscription_factory
 from src.subscriptions.topup import Topup
 from datetime import datetime
-from typing import List
+from typing import List, Union
 
 class User:
     subscriptions: List[Subscription]
@@ -16,7 +16,7 @@ class User:
         self.top_ups = []
         self.total_price = 0
 
-    def add_subscription(self, *,category: Category,plan: Plan, start_date:datetime)-> Subscription | None:
+    def add_subscription(self, *,category: Category,plan: Plan, start_date:datetime)-> Union[Subscription,None]:
         try:
             subscription = subscription_factory(category,plan,start_date)
             self.subscriptions.append(subscription)
@@ -33,7 +33,7 @@ class User:
         if subscription in self.subscriptions:
             self.subscriptions.remove(subscription)
 
-    def add_top_up(self, *,top_up_type: TopUpType, duration: int, start_date:datetime) -> None | str:
+    def add_top_up(self, *,top_up_type: TopUpType, duration: int, start_date:datetime) -> Union[None, str]:
         try:
             if len(self.subscriptions) <= 0:
                 return "There are no subscriptions to top up for!"

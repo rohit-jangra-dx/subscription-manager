@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Union
 from src.user.user import User
 from src.config.config import CATEGORY_FROM_STRING, PLAN_FROM_STRING, TOPUP_TYPE_FROM_STRING
 from datetime import datetime
@@ -32,7 +32,7 @@ class InputParser:
         self.subscription_start_date = datetime.now()
         self.logs = []
 
-    def parse(self) -> User | None:
+    def parse(self) -> Union[User,None]:
             try:
                 with open(self.filename, 'r') as file:
                     for line in file:

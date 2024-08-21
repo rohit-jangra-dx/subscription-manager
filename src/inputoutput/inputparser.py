@@ -2,7 +2,7 @@ from typing import List, Union
 from src.user.user import User
 from src.config.config import CATEGORY_FROM_STRING, PLAN_FROM_STRING, TOPUP_TYPE_FROM_STRING
 from datetime import datetime
-from src.util import validate_date, findDuplicatesInList
+from src.util import validate_date, find_duplicates_in_list
 
 #exceptions
 from src.exceptions.subscriptionerr import SubscriptionError, SubscriptionsNotFoundError, DuplicateCategoryError
@@ -29,7 +29,7 @@ class InputParser:
     def __init__(self,filename: str):
         self.filename = filename
         self.user = User()
-        self.subscription_start_date = datetime.now()
+        self.subscription_start_date = None
         self.logs = []
 
     def parse(self) -> Union[User,None]:
@@ -63,7 +63,7 @@ class InputParser:
     def _handle_add_subscription(self, line: str):
         _, category, plan = line.split()
         try:
-            if findDuplicatesInList("type_of_subscription",CATEGORY_FROM_STRING[category],self.user.subscriptions):
+            if find_duplicates_in_list("type_of_subscription",CATEGORY_FROM_STRING[category],self.user.subscriptions):
                 raise DuplicateCategoryError()
 
             subscription = self.user.add_subscription(

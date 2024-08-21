@@ -18,11 +18,11 @@ class Subscription:
         self.end_date = self._calculate_end_date(plan)
         self.subscription_price = self._get_subscription_price(subscription_type,plan)
 
-    def __calculate_end_date(self,plan:Plan) -> datetime:
+    def _calculate_end_date(self,plan:Plan) -> datetime:
         months = PLAN_DURATION[plan]
         return self.start_date + relativedelta(months=months)
     
-    def __get_subscription_price(self, subscription_type: Category, plan: Plan) -> int:
+    def _get_subscription_price(self, subscription_type: Category, plan: Plan) -> int:
         return SUBSCRIPTION_PRICES.get(subscription_type, {}).get(plan, 0)
    
     @property
@@ -30,7 +30,7 @@ class Subscription:
         return self.end_date - datetime.now()
     
     @property
-    def notification_date(self) ->timedelta:
+    def notification_date(self) -> timedelta:
         return self.end_date - relativedelta(days=RENEWAL_REMINDER_DAYS)
 
     def __eq__(self, other):
@@ -57,3 +57,5 @@ class Video(Subscription):
 class Podcast(Subscription):
     def __init__(self, *, plan: Plan, start_date: datetime):
         super().__init__(subscription_type=Category.PODCAST, plan=plan, start_date=start_date)
+
+

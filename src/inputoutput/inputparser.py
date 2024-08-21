@@ -2,6 +2,7 @@ import traceback
 from src.user.user import User
 from src.config.config import CATEGORY_FROM_STRING, PLAN_FROM_STRING, TOPUP_TYPE_FROM_STRING
 from datetime import datetime
+from src.inputoutput.outputwriter import Output_writer
 
 commands = {
     'start_date':"START_SUBSCRIPTION",
@@ -18,6 +19,7 @@ class InputParser:
     def __init__(self,filename: str):
         self.filename = filename
         self.user = User()
+        self.subscription_start_date = datetime.now()
 
     def parse(self) -> User | None:
             try:
@@ -63,5 +65,6 @@ class InputParser:
         )
 
     def _handle_print_details(self):
-        print("Work in progress")
+        writer = Output_writer(self.user)
+        writer.print_details()
             

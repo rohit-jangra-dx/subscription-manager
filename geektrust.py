@@ -9,10 +9,7 @@ def main():
 
     obj = InputParser(file_path)
     user = obj.parse()    
-    print(user.total_price)
-    
-    for subscription in user.subscriptions:
-        print(subscription.notification_date.strftime('%d-%m-%Y'))
+ 
 
 if __name__ == "__main__":
     main()

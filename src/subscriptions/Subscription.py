@@ -3,6 +3,8 @@ from dateutil.relativedelta import relativedelta
 
 from src.config.config import Category, Plan, PLAN_DURATION, SUBSCRIPTION_PRICES, RENEWAL_REMINDER_DAYS
 
+#custom exceptions
+from src.exceptions.subscriptionerr import *
 
 class Subscription:
     type_of_subscription: Category
@@ -30,8 +32,9 @@ class Subscription:
         return self.end_date - datetime.now()
     
     @property
-    def notification_date(self) -> timedelta:
-        return self.end_date - relativedelta(days=RENEWAL_REMINDER_DAYS)
+    def notification_date(self) -> str:
+        date =  self.end_date - relativedelta(days=RENEWAL_REMINDER_DAYS)
+        return date.strftime("%d-%m-%Y")
 
     def __eq__(self, other):
         if not isinstance(other,Subscription):

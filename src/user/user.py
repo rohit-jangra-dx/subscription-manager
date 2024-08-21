@@ -16,7 +16,7 @@ class User:
         self.top_ups = []
         self.total_price = 0
 
-    def add_subscription(self, *,category: Category,plan: Plan, start_date:datetime):
+    def add_subscription(self, *,category: Category,plan: Plan, start_date:datetime)-> Subscription | None:
         try:
             subscription = subscription_factory(category,plan,start_date)
             self.subscriptions.append(subscription)
@@ -24,8 +24,10 @@ class User:
             #adding up to the total_price
             self.total_price += subscription.subscription_price
 
+            return subscription
         except Exception as e:
             print(f'something happened during subscribing {e}')
+            return None
 
     def remove_subscription(self,subscription):
         if subscription in self.subscriptions:

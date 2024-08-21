@@ -10,6 +10,12 @@ class AddTopUpFailedError(TopUpError):
         full_msg = base_msg + " " + message
         super().__init__(full_msg)
 
+#when another topup is recharged during the active topup
+class DupilicateTopUpError(AddTopUpFailedError):
+
+    def __init__(self, message="DUPLICATE_TOPUP") -> None:
+        super().__init__(message)
+
 #when u are adding top up and there is no active subscriptions.
 class SubscriptionNotFoundDuringTopUp(AddTopUpFailedError):
 

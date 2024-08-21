@@ -10,10 +10,6 @@ from src.exceptions.subscriptionerr import DuplicateCategoryError
 from src.exceptions.topuperr import DupilicateTopUpError, SubscriptionNotFoundDuringTopUp
 
 class User:
-    subscriptions: List[Subscription]
-    top_ups: List[Topup]
-    total_price: int
-
     def __init__(self):
         self.__subscriptions = []
         self.__top_ups = []
@@ -60,3 +56,11 @@ class User:
     @property
     def total_price(self)-> int:
          return self.__total_price
+     
+    @property
+    def subscriptions(self) -> List[Subscription]:
+        return self.__subscriptions
+    
+    @property
+    def top_ups(self) -> List[Topup]:
+        return self.__top_ups

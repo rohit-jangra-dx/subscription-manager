@@ -11,8 +11,8 @@ class Subscription:
     def __init__(self, *, subscription_type: Category, plan: Plan, start_date: datetime):
         self.__type_of_subscription = subscription_type
         self.__start_date = start_date
-        self.__end_date = self._calculate_end_date(plan)
-        self.__subscription_price = self._get_subscription_price(subscription_type,plan)
+        self.__end_date = self.__calculate_end_date(plan)
+        self.__subscription_price = self.__get_subscription_price(subscription_type,plan)
         self.__notification_date = NotificationManager.get_notification_date(self.__end_date)
 
     def __calculate_end_date(self,plan:Plan) -> datetime:

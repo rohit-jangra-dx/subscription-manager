@@ -35,12 +35,12 @@ class SubscriptionManager:
 
     def handle_add_subscription(self,category: str, plan: str):
             if self.__check_for_invalid_date_before_action():    
-                subscription = self.__user.add_subscription(category=CATEGORY_FROM_STRING[category],plan=PLAN_FROM_STRING[plan],start_date=self.subscription_start_date)
+                subscription = self.__user.add_subscription(category=CATEGORY_FROM_STRING[category],plan=PLAN_FROM_STRING[plan],start_date=self.__start_date)
                 self.__output_writer.set_output_logs(f"{To_Print['renewal_reminder']} {subscription.notification_date}")          
 
     def handle_add_top_up(self,top_up_type:str, duration: int):
         if self.__check_for_invalid_date_before_action():    
-            topup = self.__user.add_top_up( top_up_type=TOPUP_TYPE_FROM_STRING[top_up_type],duration=duration,start_date=self.subscription_start_date)
+            topup = self.__user.add_top_up( top_up_type=TOPUP_TYPE_FROM_STRING[top_up_type],duration=duration,start_date=self.__start_date)
             self.__output_writer.set_output_logs(f"{To_Print['renewal_reminder']} {topup.notification_date}")             
     
     def handle_print_details(self):
@@ -51,7 +51,7 @@ class SubscriptionManager:
         try:
             if len(self.__user.subscriptions) == 0:
                 raise SubscriptionsNotFoundError()                
-            self.__output_writer.set_output_logs(f"{To_Print['renewal_amount']} {self.__user.__total_price}")
+            self.__output_writer.set_output_logs(f"{To_Print['renewal_amount']} {self.__user.total_price}")
 
         except SubscriptionError as e:
             self.__output_writer.set_error_logs(e)

@@ -32,7 +32,7 @@ class InputParser:
 
     def parse(self):
         try:
-            with open(self.filename, 'r') as file:
+            with open(self.filename, 'r',encoding='utf-8') as file:
                 for line in file:
                     line = line.strip()
 

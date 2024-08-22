@@ -40,7 +40,7 @@ class Topup:
     
     @property
     def top_up_price(self) -> int:
-        return self.top_up_price
+        return self.__top_up_price
 
 
     def __eq__(self, other):

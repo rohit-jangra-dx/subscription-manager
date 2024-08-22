@@ -31,26 +31,28 @@ class InputParser:
         self.__subscription_manager = SubscriptionManager(self.__user,self.__output_writer)
 
     def parse(self):
-            try:
-                with open(self.filename, 'r') as file:
-                    for line in file:
-                        line = line.strip()  # Remove any extraneous whitespace
+        try:
+            with open(self.filename, 'r') as file:
+                for line in file:
+                    line = line.strip()
+
+                    if line.startswith(INPUT_COMMANDS['start_date']):
+                        _, startdate = line.split()
+                        self.__subscription_manager.handle_set_date(startdate)
                         
-                        if line.startswith(INPUT_COMMANDS['start_date']):
-                            _, startdate = line.split()
-                            self.__subscription_manager.handle_set_date(startdate)
+                    elif line.startswith(INPUT_COMMANDS['add_subscription']):
+                        _, category, plan = line.split()
+                        self.__subscription_manager.handle_add_subscription(category,plan)
                         
-                        elif line.startswith(INPUT_COMMANDS['add_subscription']):
-                            _, category, plan = line.split()
-                            self.__subscription_manager.handle_add_subscription(category,plan)
+                    elif line.startswith(INPUT_COMMANDS['add_topup']):
+                        _, topup, duration = line.split()
+                        self.__subscription_manager.handle_add_top_up(topup,duration)
                         
-                        elif line.startswith(INPUT_COMMANDS['add_topup']):
-                            _, topup, duration = line.split()
-                            self.__subscription_manager.handle_add_top_up(topup,duration)
+                    elif line.startswith(INPUT_COMMANDS['print_details']):
+                        self.__subscription_manager.handle_print_details()
                         
-                        elif line.startswith(INPUT_COMMANDS['print_details']):
-                            self.__subscription_manager.handle_print_details()
-                        else:
-                            raise ValueError(f"Unknown command found during parsing: {line}")
-            except SubscriptionError as e:
-                print(e)
+                    else:
+                        raise ValueError(f"Unknown command found during parsing: {line}")
+                    
+        except SubscriptionError as e:
+            print(e)

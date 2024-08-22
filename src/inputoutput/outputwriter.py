@@ -1,9 +1,4 @@
 from typing import List,TypedDict
-from src.config.config import CATEGORY_FROM_STRING, TOPUP_TYPE_FROM_STRING
-# RENEWAL_REMINDER MUSIC 10-03-2022
-# RENEWAL_REMINDER VIDEO 10-05-2022
-# RENEWAL_REMINDER PODCAST 10-03-2022
-# RENEWAL_AMOUNT 750
 
 class Logs(TypedDict):
     output:List[str]
@@ -26,10 +21,10 @@ class OutputWriter:
         return self.__logs['output']
 
     def print_logs(self):
-        '''
+        """
         first print error logs if any
         then print output logs
-        '''
+        """
         for error in self.__logs['errors']:
             print(error)
         for output in self.__logs['output']:

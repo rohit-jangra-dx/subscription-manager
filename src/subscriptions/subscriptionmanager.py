@@ -44,10 +44,10 @@ class SubscriptionManager:
             self.__output_writer.set_output_logs(f"{To_Print['renewal_reminder']} {topup.notification_date}")             
     
     def handle_print_details(self):
-        '''
+        """
         adds the renewal amount as final statement to output_writer,
         then prints the statement
-        '''
+        """
         try:
             if len(self.__user.subscriptions) == 0:
                 raise SubscriptionsNotFoundError()                

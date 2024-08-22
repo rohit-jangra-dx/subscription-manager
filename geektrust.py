@@ -2,7 +2,7 @@ import sys
 from src.inputoutput.inputparser import InputParser
 
 def main():
-    if(len(sys.argv) < 1):
+    if len(sys.argv) < 1:
         raise ValueError("No input file path given!")
     
     file_path = sys.argv[1]

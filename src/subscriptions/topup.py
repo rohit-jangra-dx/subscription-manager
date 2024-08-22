@@ -2,6 +2,12 @@ from datetime import datetime, timedelta
 from dateutil.relativedelta import relativedelta
 from src.config.config import TopUpType, TOPUP_PRICES, RENEWAL_REMINDER_DAYS
 from src.util.utilclasses import NotificationManager
+
+
+def get_top_up_price(top_up_type: TopUpType, duration: int) -> int:
+    return TOPUP_PRICES.get(top_up_type, 0) * duration
+
+
 class Topup:
     def __init__(self,*,top_up_type: TopUpType,duration: int, start_date:datetime):
 
@@ -10,15 +16,12 @@ class Topup:
         self.__start_date = start_date
         self.__end_date =  self.__calculate_end_date(duration)
         self.__notification_date = NotificationManager.get_notification_date(self.__end_date)
-        self.__top_up_price = self._get_price(top_up_type,duration)
+        self.__top_up_price = get_top_up_price(top_up_type,duration)
 
 
     def __calculate_end_date(self,duration: int) -> datetime:
         return self.start_date + relativedelta(months=duration)
-    
-    def _get_price(self, top_up_type: TopUpType, duration: int) -> int:
-        return TOPUP_PRICES.get(top_up_type, 0) * duration
-    
+
     @property
     def type_of_top_up(self) -> TopUpType:
         return self.__type_of_top_up
